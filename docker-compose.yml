@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+    mongo:
+        image: mongo
+        restart: always
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./data:/data/db        
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
+
+    iot-traffic-lights:
+        image: iot-traffic-lights
+        network_mode: "host"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        depends_on:
+            - mongo
+            - iot-inspector-local
+        build:
+            network: host
+            context: iot-traffic-lights
+            dockerfile: Dockerfile
+        environment:
+            MONGOHQ_URL: mongodb://root:example@localhost:27017/iot-traffic-lights-dev?authSource=admin
+            HUE_DOMAIN: http://host.docker.internal:8000
+            IOT_INSPECTOR_DOMAIN: http://localhost:46241
+
+    iot-inspector-local:
+        image: iot-inspector-local
+        network_mode: "host"
+        build:
+            network: host
+            context: iot-inspector-local/src
+            dockerfile: Dockerfile
