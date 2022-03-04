@@ -33,14 +33,7 @@ var all = {
   },
 
   // MongoDB connection options
-  mongo: {
-    options: {
-      useNewUrlParser: true,
-      db: {
-        safe: true
-      }
-    }
-  },
+  mongo: {},
 
   hue: {
     domain: process.env.HUE_DOMAIN || 'http://host.docker.internal:8000',
