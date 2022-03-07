@@ -40,5 +40,7 @@ services:
             dockerfile: Dockerfile
         environment:
             MONGOHQ_URL: mongodb://root:example@localhost:27017/iot-traffic-lights-dev?authSource=admin
-            HUE_DOMAIN: http://host.docker.internal:8000
+            HUE_DOMAIN: http://192.168.1.57
+            HUE_USER: fm2kbtRnqsraPJZfzHa9nmswHIJxI-tB3vMUGoG1
+            HUE_LIGHT_ID: 14
             IOT_INSPECTOR_DOMAIN: http://localhost:46241
