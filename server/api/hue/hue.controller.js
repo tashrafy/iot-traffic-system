@@ -25,15 +25,20 @@ export async function getAll(req, res) {
 
 export async function modifyState(req, res) {
   const endpoint = `${hue.domain}/api/${hue.username}/lights`;
-  console.log("state values:", req.body);
+  console.log("state values original:", req.body);
   try {
-    const bri = (req.body.bri || 100) + 100;
-    const response = await axios.put(`${endpoint}/1/state`, {
+    const bri = Math.round((req.body.bri || 100) + 100);
+    const stateData = {
       on: true,
       hue: req.body.hue,
       bri: bri > 254 ? 254 : bri
-    });
+    };
+    const response = await axios.put(`${endpoint}/${hue.light_id}/state`, stateData);
+
+    console.log("state values sent:", stateData);
     const data = response.data;
+
+    console.log("response data:", data);
 
     return res.json(data);
   } catch (error) {

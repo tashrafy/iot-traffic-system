@@ -37,7 +37,8 @@ var all = {
 
   hue: {
     domain: process.env.HUE_DOMAIN || 'http://host.docker.internal:8000',
-    username: 'newdeveloper'
+    username: process.env.HUE_USER || 'newdeveloper',
+    light_id: process.env.HUE_LIGHT_ID || 1
   },
 
   iotInspector: {
