@@ -29,6 +29,14 @@ services:
         image: iot-traffic-lights
         restart: on-failure
         network_mode: "host"
+        privileged: true
+        devices:
+            - /dev/snd:/dev/snd
+            - /dev/shm:/dev/shm
+        volumes:
+            - /dev:/dev
+            - /tmp/.X11-unix:/tmp/.X11-unix
+            - ./iot-traffic-lights:/usr/src/app
         extra_hosts:
             - "host.docker.internal:host-gateway"
         depends_on:
@@ -39,8 +47,15 @@ services:
             context: iot-traffic-lights
             dockerfile: Dockerfile
         environment:
+            DISPLAY: unix$DISPLAY
             MONGOHQ_URL: mongodb://root:example@localhost:27017/iot-traffic-lights-dev?authSource=admin
-            HUE_DOMAIN: http://192.168.1.57
-            HUE_USER: fm2kbtRnqsraPJZfzHa9nmswHIJxI-tB3vMUGoG1
-            HUE_LIGHT_ID: 14
             IOT_INSPECTOR_DOMAIN: http://localhost:46241
+            # Philip's Hue Lightbulb Configuration
+            ENABLE_HUE: "true"
+            HUE_DOMAIN: http://192.168.1.57
+            HUE_USER: fm2kbtRnqsraPJZfzHa9nmswHIJxI-tB3vMUGoGp
+            HUE_LIGHT_ID: 14
+            # Bluetooth Audio Interface Configuration
+            ENABLE_AUDIO: "true"
+            WARNING_TRAFFIC_TTS: "A flow of potentially concerning traffic has been identified from a device on the network."
+            TRACKING_TRAFFIC_TTS: "A flow of tracking traffic has been identified from a device on the network."
