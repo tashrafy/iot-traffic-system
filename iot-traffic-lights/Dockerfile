@@ -1,4 +1,7 @@
-FROM node:14-alpine
+FROM node:14
+
+RUN apt-get update && apt-get install -y mplayer bluez bluetooth mpg321
+# RUN usermod -a -G audio USERNAME
 
 # Create app directory
 WORKDIR /usr/src/app

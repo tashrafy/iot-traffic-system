@@ -35,14 +35,21 @@ var all = {
   // MongoDB connection options
   mongo: {},
 
-  hue: {
-    domain: process.env.HUE_DOMAIN || 'http://host.docker.internal:8000',
-    username: process.env.HUE_USER || 'newdeveloper',
-    light_id: process.env.HUE_LIGHT_ID || 1
-  },
-
   iotInspector: {
     domain: process.env.IOT_INSPECTOR_DOMAIN || 'http://localhost:46241'
+  },
+
+  hue: {
+    enabled: Boolean(process.env.ENABLE_HUE) || false,
+    domain: process.env.HUE_DOMAIN || 'http://host.docker.internal:8000',
+    username: process.env.HUE_USER || 'newdeveloper',
+    lightId: process.env.HUE_LIGHT_ID || 1
+  },
+
+  audio: {
+    enabled: Boolean(process.env.ENABLE_AUDIO) || false,
+    warningTts: process.env.WARNING_TRAFFIC_TTS || "warning traffic",
+    trackingTts: process.env.TRACKING_TRAFFIC_TTS || "tracking traffic"
   }
 };
 

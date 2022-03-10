@@ -33,7 +33,7 @@ export async function modifyState(req, res) {
       hue: req.body.hue,
       bri: bri > 254 ? 254 : bri
     };
-    const response = await axios.put(`${endpoint}/${hue.light_id}/state`, stateData);
+    const response = await axios.put(`${endpoint}/${hue.lightId}/state`, stateData);
 
     console.log("state values sent:", stateData);
     const data = response.data;
