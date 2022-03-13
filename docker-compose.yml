@@ -25,18 +25,45 @@ services:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
 
+    # pulseaudio-bluetooth:
+    #     restart: always
+    #     image: kvaps/pulseaudio-bluetooth
+    #     devices:
+    #         - /dev/bus/usb/002/001
+    #     network_mode: "host"
+    #     cap_add:
+    #         - NET_ADMIN
+    #     volumes:
+    #         - /etc/localtime:/etc/locialtime:ro
+    #         - ./bluetooth:/var/lib/bluetooth
+    #     environment:
+    #         PIN: 123321
+    #         NAME: ALEXA
+    #         DEVICE: F8:54:B8:7C:34:2C
+    #         DEVICE_PIN: 0000
+
     iot-traffic-lights:
         image: iot-traffic-lights
         restart: on-failure
         network_mode: "host"
         privileged: true
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
         devices:
             - /dev/snd:/dev/snd
             - /dev/shm:/dev/shm
+            - /dev/bus/usb:/dev/bus/usb
+            - /dev/bus/usb/002/001
         volumes:
-            - /dev:/dev
+            - /etc/localtime:/etc/locialtime:ro
+            - /usr/lib/bluetooth:/usr/lib/bluetooth
             - /tmp/.X11-unix:/tmp/.X11-unix
             - ./iot-traffic-lights:/usr/src/app
+            - /run/udev:/run/udev:ro
+            - /var/run:/var/run
+            - /usr/sbin:/usr/sbin
+            - /run/user/1000/pulse/native:/run/user/1000/pulse/native
         extra_hosts:
             - "host.docker.internal:host-gateway"
         depends_on:
@@ -47,7 +74,7 @@ services:
             context: iot-traffic-lights
             dockerfile: Dockerfile
         environment:
-            DISPLAY: unix$DISPLAY
+            # DISPLAY: unix$DISPLAY
             MONGOHQ_URL: mongodb://root:example@localhost:27017/iot-traffic-lights-dev?authSource=admin
             IOT_INSPECTOR_DOMAIN: http://localhost:46241
             # Philip's Hue Lightbulb Configuration
@@ -56,6 +83,11 @@ services:
             HUE_USER: fm2kbtRnqsraPJZfzHa9nmswHIJxI-tB3vMUGoGp
             HUE_LIGHT_ID: 14
             # Bluetooth Audio Interface Configuration
+            # PIN: 123321
+            # NAME: ALEXA
+            # DEVICE: F0:D5:BF:3A:17:F3
+            # DEVICE_PIN: 0000
+            # XDG_CONFIG_HOME: /etc
             ENABLE_AUDIO: "true"
             WARNING_TRAFFIC_TTS: "A flow of potentially concerning traffic has been identified from a device on the network."
             TRACKING_TRAFFIC_TTS: "A flow of tracking traffic has been identified from a device on the network."
