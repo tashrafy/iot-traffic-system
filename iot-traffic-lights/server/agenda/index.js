@@ -47,9 +47,9 @@ agenda.on("ready", () => {
       await scheduleReoccurringJob("Toggle Traffic Lights", "6 seconds", "America/New_York", userId);
     }
 
-    if (config.audio.enabled) {
-      await scheduleReoccurringJob("Run Audio Modality", "10 seconds", "America/New_York", userId);
-    }
+    // if (config.audio.enabled) {
+    //   await scheduleReoccurringJob("Run Audio Modality", "10 seconds", "America/New_York", userId);
+    // }
 
     done();
   });
@@ -88,30 +88,30 @@ agenda.on("ready", () => {
     done();
   });
 
-  agenda.define("Run Audio Modality", async function(job, done) {
-    const { trackingTraffic, regularTraffic } = await getTrackingData(job.attrs.data);
+  // agenda.define("Run Audio Modality", async function(job, done) {
+  //   const { trackingTraffic, regularTraffic } = await getTrackingData(job.attrs.data);
 
-    console.log("running audio modality");
+  //   console.log("running audio modality");
 
-    if (trackingTraffic) {
-      console.log("trackingTraffic", trackingTraffic);
-      exec('mpg321 tracking-traffic-english.mp3', console.log)
-      player.play('tracking-traffic-english.mp3', (err) => {
-        console.log("err", err);
-        if (err) throw err
-      })
-    } else if (regularTraffic) {
-      console.log("regularTraffic", regularTraffic);
+  //   if (trackingTraffic) {
+  //     console.log("trackingTraffic", trackingTraffic);
+  //     exec('mpg321 tracking-traffic-english.mp3', console.log)
+  //     player.play('tracking-traffic-english.mp3', (err) => {
+  //       console.log("err", err);
+  //       if (err) throw err
+  //     })
+  //   } else if (regularTraffic) {
+  //     console.log("regularTraffic", regularTraffic);
 
-      exec('mpg321 warning-traffic-english.mp3', console.log)
-      player.play('warning-traffic-english.mp3', (err) => {
-        console.log("err", err);
-        if (err) throw err
-      })
-    }
+  //     exec('mpg321 warning-traffic-english.mp3', console.log)
+  //     player.play('warning-traffic-english.mp3', (err) => {
+  //       console.log("err", err);
+  //       if (err) throw err
+  //     })
+  //   }
 
-    done();
-  });
+  //   done();
+  // });
 
   agenda.now("Initialize Capture");
 
