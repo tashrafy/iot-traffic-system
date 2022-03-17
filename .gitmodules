@@ -1,3 +1,9 @@
 [submodule "hue-emulator"]
 	path = hue-emulator
 	url = https://github.com/SteveyO/Hue-Emulator.git
+[submodule "iot-inspector-local"]
+	path = iot-inspector-local
+	url = git@github.com:tashrafy/iot-inspector-local.git
+[submodule "iot-traffic-lights"]
+	path = iot-traffic-lights
+	url = git@github.com:tashrafy/iot-traffic-lights.git
