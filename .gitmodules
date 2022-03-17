@@ -1,0 +1,3 @@
+[submodule "hue-emulator"]
+	path = hue-emulator
+	url = https://github.com/SteveyO/Hue-Emulator.git
