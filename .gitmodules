@@ -7,3 +7,6 @@
 [submodule "iot-traffic-lights"]
 	path = iot-traffic-lights
 	url = git@github.com:tashrafy/iot-traffic-lights.git
+[submodule "iot-traffic-sound"]
+	path = iot-traffic-sound
+	url = git@github.com:tashrafy/iot-traffic-sound.git
