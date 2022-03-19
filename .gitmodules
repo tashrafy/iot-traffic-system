@@ -10,3 +10,6 @@
 [submodule "iot-traffic-sound"]
 	path = iot-traffic-sound
 	url = git@github.com:tashrafy/iot-traffic-sound.git
+[submodule "iot-traffic-agent"]
+	path = iot-traffic-agent
+	url = git@github.com:tashrafy/iot-traffic-agent.git
