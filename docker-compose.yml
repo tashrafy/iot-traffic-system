@@ -25,18 +25,12 @@ services:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
 
-    iot-traffic-lights:
-        image: iot-traffic-lights
+    iot-traffic-agent:
+        image: iot-traffic-agent
         restart: on-failure
         network_mode: "host"
-        privileged: true
-        devices:
-            - /dev/snd:/dev/snd
-            - /dev/shm:/dev/shm
         volumes:
-            - /dev:/dev
-            - /tmp/.X11-unix:/tmp/.X11-unix
-            - ./iot-traffic-lights:/usr/src/app
+            - ./iot-traffic-agent:/usr/src/app
         extra_hosts:
             - "host.docker.internal:host-gateway"
         depends_on:
@@ -44,18 +38,45 @@ services:
             - iot-inspector-local
         build:
             network: host
-            context: iot-traffic-lights
+            context: iot-traffic-agent
             dockerfile: Dockerfile
+        command: sh -c "/wait && npm run start"
         environment:
-            DISPLAY: unix$DISPLAY
+            PORT: 9003
+            UUID: ${UUID}
+            WAIT_HOSTS: localhost:27017, localhost:46241
+            WAIT_HOSTS_TIMEOUT: 300
+            WAIT_SLEEP_INTERVAL: 30
+            WAIT_HOST_CONNECT_TIMEOUT: 30
             MONGOHQ_URL: mongodb://root:example@localhost:27017/iot-traffic-lights-dev?authSource=admin
             IOT_INSPECTOR_DOMAIN: http://localhost:46241
-            # Philip's Hue Lightbulb Configuration
+
+    iot-traffic-lights:
+        image: iot-traffic-lights
+        restart: on-failure
+        network_mode: "host"
+        volumes:
+            - ./iot-traffic-lights:/usr/src/app
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        depends_on:
+            - mongo
+            - iot-inspector-local
+            - iot-traffic-agent
+        build:
+            network: host
+            context: iot-traffic-lights
+            dockerfile: Dockerfile
+        command: sh -c "/wait && npm run start"
+        environment:
+            PORT: 9000
+            UUID: ${UUID}
+            WAIT_HOSTS: localhost:27017, localhost:46241, localhost:9003
+            WAIT_HOSTS_TIMEOUT: 300
+            WAIT_SLEEP_INTERVAL: 30
+            WAIT_HOST_CONNECT_TIMEOUT: 30
+            MONGOHQ_URL: mongodb://root:example@localhost:27017/iot-traffic-lights-dev?authSource=admin
             ENABLE_HUE: "true"
             HUE_DOMAIN: http://192.168.1.57
             HUE_USER: fm2kbtRnqsraPJZfzHa9nmswHIJxI-tB3vMUGoGp
             HUE_LIGHT_ID: 14
-            # Bluetooth Audio Interface Configuration
-            ENABLE_AUDIO: "true"
-            WARNING_TRAFFIC_TTS: "A flow of potentially concerning traffic has been identified from a device on the network."
-            TRACKING_TRAFFIC_TTS: "A flow of tracking traffic has been identified from a device on the network."

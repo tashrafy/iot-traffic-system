@@ -2,4 +2,4 @@
 
 docker-compose stop
 docker-compose down
-docker image rm iot-traffic-lights
+docker image rm iot-traffic-agent iot-traffic-lights
