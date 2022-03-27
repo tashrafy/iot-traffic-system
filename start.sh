@@ -19,3 +19,4 @@ if [ true"${ENABLE_AUDIO}" == "true" ]; then
 	export TRACKING_TRAFFIC_TTS="A flow of tracking traffic has been identified from a device on the network."
 	npm run start
 	cd ../
+fi
